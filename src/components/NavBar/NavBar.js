@@ -1,4 +1,5 @@
 import React from "react";
+import CartWidget from '../CartWidget/CardWidget'
 
 const NavBar = () => {
   return (
@@ -66,6 +67,11 @@ const NavBar = () => {
             </li>
           </ul>
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
+          <li className="nav-item">
+              <CartWidget/>
+            </li>
+          </ul>
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
             <li className="nav-item ">
               <a
                 className="nav-link active text-white login"
@@ -80,6 +86,7 @@ const NavBar = () => {
                 Register
               </a>
             </li>
+            
           </ul>
         </div>
       </div>
