@@ -1,19 +1,37 @@
+@font-face {
+  font-family: FreeLine;
+  src: url('../public/FreeLine.ttf') format('truetype');
+}
+.marca{
+  font-family: FreeLine;
+  color: #d9f701;
+}
+
 .login{
-  background-color: #e42a74;
-  border-radius: 1em 0 1em 0;
-  border: 1px solid #e07ba4;
+  
+  /* background-color: #e42a7491; */
+  border-radius: .7em 0 .7em 0;
+  border: 4px double #d9f701;
   text-align: center;
+  font-weight: 700;
 }
 .login:hover{
-  background-color: #e07ba4;
+  background-color: #d9f701;
 }
 .register{
-  background-color: #e42a74;
-  border-radius: 1em 0 1em 0;
-  border: 1px solid #e07ba4;
+  
+  /* background-color: #e42a7491; */
+  border-radius: .7em 0 .7em 0;
+  border: .3em double #d9f701;
   text-align: center;
+  font-weight: 700;
+ 
 }
 .register:hover{
-  background-color: #e2a0bb;
-  
+  background-color: #d9f701;
+  color: black;
 }
+.focus:hover{
+  color: black;
+}
+
