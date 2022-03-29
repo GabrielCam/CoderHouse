@@ -12,8 +12,8 @@ function App() {
   return (
     <div >
       <NavBar/>
-      <ItemListContainer greeting={"Bienvenidos a BuyZone donde podras encontrar todo lo que quieres"}/>
-      <ItemCount stk={30} initial={1} onAdd={onAdd}/>
+      <ItemListContainer greeting={"Bienvenidos a BuyZone donde podras encontrar todo lo que quieras!!"}/>
+      {/* <ItemCount stk={30} initial={1} onAdd={onAdd}/> */}
     </div>
   );
 }
