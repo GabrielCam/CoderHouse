@@ -25,13 +25,40 @@ const products = [
         img:'https://acroadtrip.blob.core.windows.net/catalogo-imagenes/xl/RT_V_6b742773475345ddadabe1fad775bb0c.jpg',
         stock:2,
         description:'Descripcion de auto'
+    },
+    {
+        id:4,
+        name:'Departamento Venta',
+        price:400000,
+        category:'inmuebles',
+        img:'https://assets.easybroker.com/property_images/1016795/15346981/EB-CW6795.jpg?version=1555173574',
+        stock:1,
+        description:'Descripcion de depto'
+    },
+    {
+        id:5,
+        name:'Hueawei p20 Lite',
+        price:600,
+        category:'celulares',
+        img:'https://technologyltda.com/wp-content/uploads/2020/07/huawei-p20-lite-1530700103001.jpg',
+        stock:10,
+        description:'Descripcion de Huewei'
     }
+
 ]
 
 export const getProducts = ()=>{
     return new Promise((resolve,reject)=>{
         setTimeout(()=>{
             resolve(products)
+        },2000)
+    })
+}
+
+export const getItemById = (id)=>{
+    return new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve(products.find(prod=>prod.id === parseInt(id)))
         },2000)
     })
 }

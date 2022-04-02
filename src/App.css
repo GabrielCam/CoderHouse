@@ -4,7 +4,9 @@
 }
 .marca{
   font-family: FreeLine;
+  font-size: xx-large;
   color: #d9f701;
+  text-decoration: none;
 }
 
 .login{
@@ -34,4 +36,15 @@
 .focus:hover{
   color: black;
 }
-
+.card:hover{
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  
+}
+.product-img{
+  width: auto;
+  transition: all .5s;
+}
+.product-img:hover{
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+  transform: scale(1.03);
+}

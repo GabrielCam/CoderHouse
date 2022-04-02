@@ -4,7 +4,7 @@ const CardWidget = () => {
   return (
     
       <button type="button" className="btn btn-outline-dark text-white">
-        <img src="/carts.png" height={"25px"} alt="cart" />
+        <img src="/carts.png" height={"35px"} alt="cart" />
         <span className="badge bg-secondary">4</span>
       </button>
    

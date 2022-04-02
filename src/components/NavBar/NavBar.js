@@ -1,16 +1,17 @@
 import React from "react";
 import CartWidget from "../CartWidget/CardWidget";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-dark">
       <div className="container-fluid">
-                <a className="navbar-brand" href="/#">
+                <Link className="navbar-brand" to="/">
                     <img width="100px" src="/logo.png" alt="logo" />
-                 </a>
-                    <span className="marca">
+                 </Link>
+                    <Link to="/" className="marca">
                         BZone
-                    </span>
+                    </Link>
                 <button
                     className="navbar-toggler"
                     type="button"
