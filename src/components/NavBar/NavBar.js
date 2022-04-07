@@ -1,6 +1,6 @@
 import React from "react";
 import CartWidget from "../CartWidget/CardWidget";
-import { Link } from "react-router-dom";
+import { Link , NavLink} from "react-router-dom";
 
 const NavBar = () => {
   return (
@@ -39,33 +39,27 @@ const NavBar = () => {
                             </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown" >
                             <li>
-                                <a className="dropdown-item" href="/#">
+                                <NavLink to='/category/vehiculos' className={({isActive})=>isActive?'dropdown-item active':'dropdown-item'} >
                                     Vehiculos
-                                </a>
+                                </NavLink>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="/#">
+                                <NavLink to='/category/inmuebles' className={({isActive})=>isActive?'dropdown-item active':'dropdown-item'} >
                                     Inmuebles
-                                </a>
+                                </NavLink>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="/#">
+                                <NavLink to='/category/celulares' className={({isActive})=>isActive?'dropdown-item active':'dropdown-item'} >
                                     Celulares
-                                </a>
+                                </NavLink>
                             </li>
                             <li>
-                                <a className="dropdown-item" href="/#">
+                                <NavLink to='/category/notebooks' className={({isActive})=>isActive?'dropdown-item active':'dropdown-item'} >
                                     Notebooks
-                                </a>
+                                </NavLink>
                             </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a className="dropdown-item" href="/#">
-                                    Ofertas
-                                </a>
-                            </li>
+                            
+                            
                         </ul>
                     </li>
                 </ul>

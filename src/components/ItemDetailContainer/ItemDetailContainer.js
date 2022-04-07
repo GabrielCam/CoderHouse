@@ -19,7 +19,6 @@ const ItemDetailContainer = () => {
     <div>
         {show?<ItemDetail {...product}/>:<div className="d-flex justify-content-center mt-5">
   <div className="spinner-border" style={{width:"4rem",height:"4rem"}} role="status">
-    
   </div>
 </div>}
     </div>

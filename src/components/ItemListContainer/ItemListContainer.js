@@ -1,18 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { getProducts } from "../../asyncmock";
+import { getProducts, getProductsByCategory } from "../../asyncmock";
 import ItemList from "../ItemList/ItemList";
+import { useParams } from "react-router-dom";
 
 const ItemListContainer = (props) => {
   const [products, setProducts] = useState([]);
   const [show,setShow] = useState(false)
- 
+
+  const {categoryId} = useParams()
+
   useEffect(() => {
-    getProducts().then((response) => {
-      setProducts(response);
-      setShow(true)
-    });
-  }, []);
-  // console.log(products)
+
+    if (categoryId) {
+      getProductsByCategory(categoryId).then(items=>{
+        setProducts(items)
+        setShow(true)
+      }).catch(err=>{
+        console.log(err)
+      })
+    } else {
+      getProducts().then((response) => {
+        setProducts(response);
+        setShow(true)
+      })
+    }
+    return(()=>{
+      setShow(false)
+    })
+  }, [categoryId]);
+
+  if (show && products.length === 0) {
+    return <h1 className="display-2">No hay productos de esta categoria</h1>
+  }
+
   return (
     <div className="container">
       <p className="display-6">{props.greeting}</p>

@@ -17,6 +17,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<ItemListContainer greeting={"Bienvenidos a BuyZone donde podras encontrar todo lo que quieras!!"}/>}/>
+          <Route path="/category/:categoryId" element={<ItemListContainer/>}/>
           <Route path="/item/:id" element={<ItemDetailContainer/>}/>
           <Route path="*" element={<h1>404 no found</h1>}/>
           {/* <ItemCount stk={30} initial={1} onAdd={onAdd}/> */}
