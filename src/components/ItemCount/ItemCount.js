@@ -1,27 +1,24 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState  } from "react";
 
-const ItemCount = ({stk,initial,onAdd}) => {
-  const [count, setCount] = useState(initial);
-  const [stock, setStock] = useState(stk);
+const ItemCount = ({onAdd}) => {
+  const [count, setCount] = useState(0);
+
 
   const increment = () => {
-    setCount((count) => count + 1);
+    setCount(count + 1);
   };
 
   const decrement = () => {
-    setCount((count) => count - 1);
+    setCount(count - 1);
   };
-  useEffect(() => {
-    console.log("stock actual",stock);
-  }, [stock]);
-
+  
   return (
     <>
-      <div className="col-3 offset-1">
-        <div className="card" style={{ width: "13rem" }}>
-          <div className="card-header">Samsung S21</div>
+      <div className="" style={{ width: "13rem" }}>
+        <div className="" >
+          
           <ul className="list-group list-group-flush">
-            <li className="list-group-item d-flex justify-content-center">
+            <li className="d-flex justify-content-center">
               <div
                 className="btn-group"
                 role="group"
@@ -29,24 +26,22 @@ const ItemCount = ({stk,initial,onAdd}) => {
               >
                 <button
                   type="button"
-                  onClick={count > 0 ? decrement : null}
+                  onClick={decrement}
                   className="btn btn-outline-primary"
                 >
                   -
                 </button>
                 <button
                   type="button"
-                  className="btn btn-outline-primary disabled"
+                  className="btn btn-outline-primary disabled border-0 bg-dark"
                 >
-                  {count}
+                    <span className="display-6" style={{color:"#d9f701",fontWeight:"bolder"}}>
+                       {count}
+                    </span> 
                 </button>
                 <button
                   type="button"
-                  onClick={
-                    count <= stock
-                      ? increment
-                      : alert("La cantidad ingresada supera al stock actual") 
-                  }
+                  onClick={increment}
                   className="btn btn-outline-primary"
                 >
                   +
@@ -56,11 +51,7 @@ const ItemCount = ({stk,initial,onAdd}) => {
             <li className="list-group-item d-flex justify-content-center">
               <button
                 type="button"
-                onClick={() => {
-                  stock >= count
-                    ? setStock(onAdd(stock,count), setCount(0))
-                    : alert("no se puede agregar");
-                }}
+                onClick={()=>{onAdd(count)}}
                 className="btn btn-outline-primary"
               >
                 Agregar al carrito

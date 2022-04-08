@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar/NavBar";
 import ItemListContainer from "./components/ItemListContainer/ItemListContainer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ItemDetailContainer from "./components/ItemDetailContainer/ItemDetailContainer";
+import Cart from "./components/Cart/Cart";
 // import ItemCount from './components/ItemCount/ItemCount';
 
 // const onAdd=(stock,count)=>{
@@ -20,6 +21,7 @@ function App() {
           <Route path="/category/:categoryId" element={<ItemListContainer/>}/>
           <Route path="/item/:id" element={<ItemDetailContainer/>}/>
           <Route path="*" element={<h1>404 no found</h1>}/>
+          <Route path="/cart" element={<Cart/>}/>
           {/* <ItemCount stk={30} initial={1} onAdd={onAdd}/> */}
         </Routes>
       </BrowserRouter>

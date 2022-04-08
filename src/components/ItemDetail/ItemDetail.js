@@ -1,6 +1,18 @@
-import React from "react";
+import React,{ useState } from "react";
+import ItemCount from "../ItemCount/ItemCount";
+import { Link } from "react-router-dom";
+
+
 
 const ItemDetail = (prod) => {
+  const [quantity,setQuantity] = useState(0)
+
+
+  const handleOnAdd=(count)=>{
+    console.log("agregue al carrito "+count)
+    setQuantity(count)
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -84,8 +96,11 @@ const ItemDetail = (prod) => {
               
             </div>
             <div className="form-group row">
-              <div className="col-sm-9 col-md-9">
+              <div className="col">
                 <button className="btn btn-primary">Comprar ahora!</button>
+              </div>
+              <div className="col">
+                {quantity===0?<ItemCount onAdd={handleOnAdd}/>:<Link to='/cart' className="btn btn-primary">Ir al carrito</Link>}
               </div>
             </div>
           </div>
