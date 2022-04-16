@@ -18,7 +18,10 @@ const ItemDetail = (prod) => {
     setQuantity(count)
     // setCart([...cart,{...prod}])
     addItem({...prod},count)
+
   }
+  console.log("esta en carrito?",  isInCart(prod.id))
+ 
 
   return (
     <div className="container">
@@ -108,7 +111,7 @@ const ItemDetail = (prod) => {
               </div>
               
               <div className="col">
-                {quantity===0?<ItemCount onAdd={handleOnAdd}/>:<Link to='/cart' className="btn btn-primary">Ir al carrito</Link>}
+                {!isInCart(prod.id)?<ItemCount onAdd={handleOnAdd}/>:<Link to='/cart' className="btn btn-primary">Ir al carrito</Link>}
               </div>
             </div>
           </div>
@@ -116,6 +119,7 @@ const ItemDetail = (prod) => {
             </div>
       </div>
     </div>
+    
   );
 };
 

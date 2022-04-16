@@ -22,17 +22,17 @@ export const CartContextProvider = ({ children }) => {
   }
 
   const removeItem = (id) => {
-       setCart(cart.filter((prod)=>prod.id != id))
+       setCart(cart.filter((prod)=>prod.id !== id))
   };
   const clearCart=()=>{
       setCart([])
   }
-  const isInCart = (prod)=>{
-    let res =  cart.find(el => el.id === prod.id);
-    if(res){
-        return true
-    }else{
+  const isInCart = (id)=>{
+    let res =  cart.filter(el => el.id === id);
+    if(res.length===0){
         return false
+    }else{
+        return true
     }
     
   }
