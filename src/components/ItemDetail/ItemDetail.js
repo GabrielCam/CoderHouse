@@ -8,6 +8,7 @@ import CartContext from '../../context/CartContext'
 
 const ItemDetail = (prod) => {
   const [quantity,setQuantity] = useState(0)
+  const [show,setShow] = useState(false)
   
   // const {cart, setCart} = useContext(CartContext)
   // console.log(cart)
@@ -17,6 +18,7 @@ const ItemDetail = (prod) => {
     console.log("agregue al carrito "+count)
     setQuantity(count)
     // setCart([...cart,{...prod}])
+    setShow(true)
     addItem({...prod},count)
 
   }
@@ -107,7 +109,7 @@ const ItemDetail = (prod) => {
             </div>
             <div className="form-group row">
               <div className="col">
-                <button className="btn btn-primary">Comprar ahora!</button>
+                {show?<button className="btn btn-primary">Terminar mi compra!</button>:null}
               </div>
               
               <div className="col">
