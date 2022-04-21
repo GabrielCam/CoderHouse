@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import ItemDetail from '../ItemDetail/ItemDetail'
 import { getItemById } from '../../asyncmock'
 import {useParams} from 'react-router-dom'
+import { firestoreDB } from '../../services/firebase'
+import { getDoc, doc, snapshotEqual } from 'firebase/firestore'
 
 const ItemDetailContainer = () => {
     const [product, setProduct] = useState()
@@ -10,10 +12,22 @@ const ItemDetailContainer = () => {
     const {id} = useParams()
 
     useEffect(()=>{
-        getItemById(id).then(prod=>{
-            setProduct(prod)
-            setShow(true)
+        // getItemById(id).then(prod=>{
+        //     setProduct(prod)
+        //     setShow(true)
+        // })
+
+        const docRef = doc(firestoreDB, 'products', id)
+
+        getDoc(docRef).then(querySnapshot=>{
+          const product = {id:querySnapshot.id, ...querySnapshot.data()}
+          setProduct(product)
+        }).catch(error=>{
+          console.log(error)
+        }).finally(()=>{
+          setShow(true)
         })
+
     },[id,show])
   return (
     <div>

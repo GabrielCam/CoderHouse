@@ -49,7 +49,7 @@ const NavBar = () => {
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink to='/category/celulares' className={({isActive})=>isActive?'dropdown-item active':'dropdown-item'} >
+                                <NavLink to='/category/celular' className={({isActive})=>isActive?'dropdown-item active':'dropdown-item'} >
                                     Celulares
                                 </NavLink>
                             </li>
