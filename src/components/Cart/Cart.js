@@ -1,101 +1,133 @@
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 import CartContex from "../../context/CartContext";
 import { Link } from "react-router-dom";
-import { addDoc,updateDoc, collection, getDocs,doc,query,where,documentId,writeBatch } from "firebase/firestore";
+import Formulario from "../Formulario/Formulario";
+
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  documentId,
+  writeBatch,
+} from "firebase/firestore";
 import { firestoreDB } from "../../services/firebase";
+
+const confirmOrder = (email,emailconfirm,orden)=>{
+  if(email===emailconfirm){
+    console.log("la Orden es")
+    console.log(orden)
+    return orden
+}else{
+    console.log("ingrese los mismos mail")
+}
+}
 
 function Cart() {
   const { cart, clearCart, removeItem, getTotal } = useContext(CartContex);
-  const createOrder = ()=>{
-    
+  const [buyer,setBuyer] = useState({})
+
+  const createOrder = () => {
     const objOrder = {
-      buyer:{
-        name:'Gabriel',
-        phone:'123444444',
-        email:'gabriel@test.com'
+      buyer: {
+        name: "Gabriel",
+        phone: "123444444",
+        email: "gabriel@test.com",
       },
-      items:cart,
-      total:getTotal()
-    }
-    // const collectionRef = collection(firestoreDB,'orders')
-    // addDoc(collectionRef,objOrder).then(resp =>{
-    //   console.log(resp)
-    // })
-    const batch = writeBatch(firestoreDB)
-    const outStock = []
-    const ids = cart.map(prod => prod.id)
-    
-    const collectionRef = collection(firestoreDB,'products') 
+      items: cart,
+      total: getTotal(),
+    };
 
-    getDocs(query(collectionRef, where( documentId(), 'in', ids)))
-    .then(response =>{
-      console.log(response)
-      response.docs.forEach(doc=>{
+    const batch = writeBatch(firestoreDB);
+    const outStock = [];
+    const ids = cart.map((prod) => prod.id);
 
-        const dataDoc = doc.data()
-        console.log("data doc")
-        console.log(dataDoc)
-        const prodQuantity = objOrder.items.find(prod =>prod.id === doc.id).quantity
-        if (dataDoc.stock >= prodQuantity) {
-          batch.update(doc.ref,{stock:dataDoc.stock - prodQuantity })
-        }else{
-          outStock.push({id:doc.id,dataDoc})
+    const collectionRef = collection(firestoreDB, "products");
+
+    getDocs(query(collectionRef, where(documentId(), "in", ids)))
+      .then((response) => {
+        response.docs.forEach((doc) => {
+          const dataDoc = doc.data();
+          const prodQuantity = objOrder.items.find(
+            (prod) => prod.id === doc.id
+          ).quantity;
+          if (dataDoc.stock >= prodQuantity) {
+            batch.update(doc.ref, { stock: dataDoc.stock - prodQuantity });
+          } else {
+            outStock.push({ id: doc.id, dataDoc });
+          }
+        });
+      })
+      .then(() => {
+        if (outStock.length === 0) {
+          const collectionRef = collection(firestoreDB, "orders");
+          addDoc(collectionRef, objOrder);
+        } else {
+          return Promise.reject({
+            name: "outOfStockError",
+            products: outStock,
+          });
         }
       })
-    }).then(()=>{
-      if (outStock.length === 0) {
-        const collectionRef = collection(firestoreDB,'orders')
-        addDoc(collectionRef,objOrder)
-      }else{
-        return Promise.reject({name:'outOfStockError',products:outStock})
-      }
-    }).then(()=>{
-      batch.commit()
-      clearCart()
-      console.log("se genero la orden")
-      window.alert("se genero la orden")
-    }).catch((error)=>{
-      if (error && error.name === 'outOfStockError' && error.products.length >0) {
-        console.log("No hay stock disponible")
-        window.alert("No hay stock disponible")
-        console.log(error.products)
-
-      }else{
-        console.log(error)
-      }
-    })
-  }
+      .then(() => {
+        batch.commit();
+        clearCart();
+        window.alert("se genero la orden");
+      })
+      .catch((error) => {
+        if (
+          error &&
+          error.name === "outOfStockError" &&
+          error.products.length > 0
+        ) {
+          window.alert("No hay stock disponible");
+          console.log(error.products);
+        } else {
+          console.log(error);
+        }
+      });
+  };
   console.log(cart.length);
 
   return (
     <div>
       <div className="container">
-      <p className="display-4">Lista de articulos en carrito</p>
+        <p className="display-4">Lista de articulos en carrito</p>
+        <button
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+        style={{ backgroundColor: "#d9f701" }}
+        className="btn ms-3"
+      >
+        Confirma tu compra!
+      </button>
 
-      {cart.length <= 0 ? (
-        <Link to="/" className="btn btn-primary ms-3">
-          no hay articulos en el carrito... Ir al Langing Page
-        </Link>
-      ) : (
-        <>
-          <button
-            className="btn btn-warning"
-            onClick={() => {
-              clearCart();
-            }}
-          >
-            Limpiar el Carrito
-          </button>
-          <button
-            style={{backgroundColor: "#d9f701"}}
-            className="btn ms-3"
-            onClick={createOrder}
-          >
-            Confirmar tu compra!
-          </button>
-          <p className="display-4">total:${getTotal()} </p>
-        </>
-      )}
+        {cart.length <= 0 ? (
+          <Link to="/" className="btn btn-primary ms-3">
+            no hay articulos en el carrito... Ir al Langing Page
+          </Link>
+        ) : (
+          <>
+            <button
+              className="btn btn-warning"
+              onClick={() => {
+                clearCart();
+              }}
+            >
+              Limpiar el Carrito
+            </button>
+            <button
+              style={{ backgroundColor: "#d9f701" }}
+              className="btn ms-3"
+              onClick={createOrder}
+            >
+              Confirmar tu compra!
+            </button>
+            <p className="display-4">total:${getTotal()} </p>
+          </>
+        )}
         <div>
           {cart.map((prod) => (
             <div
@@ -127,6 +159,7 @@ function Cart() {
           ))}
         </div>
       </div>
+      <Formulario confirmOrder={confirmOrder}/>
     </div>
   );
 }

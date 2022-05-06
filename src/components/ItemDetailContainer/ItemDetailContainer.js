@@ -12,11 +12,6 @@ const ItemDetailContainer = () => {
     const {id} = useParams()
 
     useEffect(()=>{
-        // getItemById(id).then(prod=>{
-        //     setProduct(prod)
-        //     setShow(true)
-        // })
-
         const docRef = doc(firestoreDB, 'products', id)
 
         getDoc(docRef).then(querySnapshot=>{

@@ -2,29 +2,19 @@ import React,{ useState,useContext } from "react";
 import ItemCount from "../ItemCount/ItemCount";
 import { Link } from "react-router-dom";
 import CartContext from '../../context/CartContext'
-// import { CartContext } from "../../App";
-
-
+import Alert from "../Alert/Alert";
 
 const ItemDetail = (prod) => {
   const [quantity,setQuantity] = useState(0)
   const [show,setShow] = useState(false)
-  
-  // const {cart, setCart} = useContext(CartContext)
-  // console.log(cart)
   const {addItem,isInCart} = useContext(CartContext)
-
   const handleOnAdd=(count)=>{
-    console.log("agregue al carrito "+count)
+    
     setQuantity(count)
-    // setCart([...cart,{...prod}])
     setShow(true)
     addItem({...prod},count)
-
   }
-  console.log("esta en carrito?",  isInCart(prod.id))
- 
-
+  
   return (
     <div className="container">
       <div className="row">
@@ -115,6 +105,7 @@ const ItemDetail = (prod) => {
               <div className="col">
                 {!isInCart(prod.id)?<ItemCount onAdd={handleOnAdd}/>:<Link to='/cart' className="btn btn-primary">Ir al carrito</Link>}
               </div>
+                <button className="btn btn-primary" onClick={()=>window.alert('hola')}>hola</button>
             </div>
           </div>
         </div>
