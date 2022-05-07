@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import ItemDetail from '../ItemDetail/ItemDetail'
-import { getItemById } from '../../asyncmock'
+
 import {useParams} from 'react-router-dom'
 import { firestoreDB } from '../../services/firebase'
-import { getDoc, doc, snapshotEqual } from 'firebase/firestore'
+import { getDoc, doc } from 'firebase/firestore'
 
 const ItemDetailContainer = () => {
     const [product, setProduct] = useState()
@@ -26,7 +26,9 @@ const ItemDetailContainer = () => {
     },[id,show])
   return (
     <div>
-        {show?<ItemDetail {...product}/>:<div className="d-flex justify-content-center mt-5">
+        {show?
+              <ItemDetail {...product}/>
+              :<div className="d-flex justify-content-center mt-5">
   <div className="spinner-border" style={{width:"4rem",height:"4rem"}} role="status">
   </div>
 </div>}

@@ -1,20 +1,107 @@
-import React, {useState,useEffect} from "react";
+import React, {useState,useEffect,useContext} from "react";
+import CartContex from "../../context/CartContext";
+
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  documentId,
+  writeBatch,
+} from "firebase/firestore";
+import { firestoreDB } from "../../services/firebase";
 
 
-const Formulario = ({confirmOrder}) => {
+const Formulario = () => {
+    const { cart, clearCart, getTotal } = useContext(CartContex);
+
     const [nombre,setNombre] = useState('')
     const [apellido,setApellido] = useState('')
     const [telefono,setTelefono] = useState('')
     const [email,setEmail] = useState('')
     const [emailconfirm,setEmailconfirm] = useState('')
-    const [orden,setOrden] = useState({})
+    const [orden,setOrden] = useState({nombre:'',apellido:'',telefono:'',email:''})
+    const [orderId,setOrderId] = useState('')
 
+ 
+    const createOrder = () => {
+    
+        if(orden.nombre!=='' && orden.apellido !== '' && orden.telefono !== '' && orden.email !== ''){
+            if(orden.email === emailconfirm){
+                const objOrder = {
+                  buyer: {
+                    name: orden.nombre,
+                    phone: orden.apellido,
+                    telefono: orden.telefono,
+                    email: orden.email,
+                  },
+                  items: cart,
+                  total: getTotal(),
+                };
+               
+                const batch = writeBatch(firestoreDB);
+                const outStock = [];
+                const ids = cart.map((prod) => prod.id);
+            
+                const collectionRef = collection(firestoreDB, "products");
+            
+                getDocs(query(collectionRef, where(documentId(), "in", ids)))
+                  .then((response) => {
+                    response.docs.forEach((doc) => {
+                      const dataDoc = doc.data();
+                      const prodQuantity = objOrder.items.find(
+                        (prod) => prod.id === doc.id
+                      ).quantity;
+                      if (dataDoc.stock >= prodQuantity) {
+                        batch.update(doc.ref, { stock: dataDoc.stock - prodQuantity });
+                      } else {
+                        outStock.push({ id: doc.id, dataDoc });
+                      }
+                    });
+                  })
+                  .then(() => {
+                    if (outStock.length === 0) {
+                      const collectionRef = collection(firestoreDB, "orders");
+                      addDoc(collectionRef, objOrder)
+                      .then((resp) => setOrderId(resp.id))
+                      .catch((err) => console.log(err))
+                    } else {
+                      return Promise.reject({
+                        name: "outOfStockError",
+                        products: outStock,
+                      });
+                    }
+                  })
+                  .then(() => {
+                    batch.commit();
+                    clearCart();
+                  })
+                  .catch((error) => {
+                    if (
+                      error &&
+                      error.name === "outOfStockError" &&
+                      error.products.length > 0
+                    ) {
+                      window.alert("No hay stock disponible");
+                      console.log(error.products);
+                    } else {
+                      console.log(error);
+                    }
+                  });
+                }else{
+                    window.alert("Email deben coincidir");
+                }
+        }else{
+            window.alert("Complete todos sus datos");
+        }
+    }
     
     useEffect(()=>{
         setOrden({nombre,apellido,telefono,email})
     },[nombre,apellido,telefono,email,emailconfirm])
 
-
+    
   return (
     
       <div
@@ -40,6 +127,8 @@ const Formulario = ({confirmOrder}) => {
               ></button>
             </div>
             <div className="modal-body">
+              {orderId===''?
+              <>
               <div className="input-group mb-3">
                 <span className="input-group-text" id="basic-addon1">
                   Nombre
@@ -126,6 +215,16 @@ const Formulario = ({confirmOrder}) => {
                   onChange={event => setEmailconfirm(event.target.value)}
                 />
               </div>
+              </>
+              :<>
+              <p className="display-5 text-success"> Gracias por su compra! :)</p>
+              <div className="alert alert-success" role="alert">
+              Su numero de comprobante es: {orderId}
+              </div>
+              </>}
+              
+              
+              
             </div>
             <div className="modal-footer">
               <button
@@ -135,9 +234,9 @@ const Formulario = ({confirmOrder}) => {
               >
                 Close
               </button>
-              <button onClick={()=>confirmOrder(email,emailconfirm,orden)} type="button" className="btn btn-primary">
+              {orderId===''?<button onClick={()=>createOrder()} type="button" className="btn btn-primary">
                 Confirmar
-              </button>
+              </button>:null}
               
             </div>
           </div>

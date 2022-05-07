@@ -2,16 +2,14 @@ import React,{ useState,useContext } from "react";
 import ItemCount from "../ItemCount/ItemCount";
 import { Link } from "react-router-dom";
 import CartContext from '../../context/CartContext'
-import Alert from "../Alert/Alert";
+
 
 const ItemDetail = (prod) => {
   const [quantity,setQuantity] = useState(0)
-  const [show,setShow] = useState(false)
   const {addItem,isInCart} = useContext(CartContext)
   const handleOnAdd=(count)=>{
     
     setQuantity(count)
-    setShow(true)
     addItem({...prod},count)
   }
   
@@ -98,19 +96,17 @@ const ItemDetail = (prod) => {
               
             </div>
             <div className="form-group row">
-              <div className="col">
-                {show?<button className="btn btn-primary">Terminar mi compra!</button>:null}
-              </div>
+              
               
               <div className="col">
-                {!isInCart(prod.id)?<ItemCount onAdd={handleOnAdd}/>:<Link to='/cart' className="btn btn-primary">Ir al carrito</Link>}
+                {!isInCart(prod.id)?<ItemCount stock={prod.stock} onAdd={handleOnAdd}/>:<Link to='/cart' className="btn btn-primary">Ir al carrito</Link>}
               </div>
-                <button className="btn btn-primary" onClick={()=>window.alert('hola')}>hola</button>
             </div>
           </div>
         </div>
             </div>
       </div>
+        
     </div>
     
   );
